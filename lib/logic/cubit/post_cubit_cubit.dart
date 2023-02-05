@@ -8,11 +8,14 @@ part 'post_cubit_state.dart';
 class PostCubitCubit extends Cubit<PostCubitState> {
   PostRepository postRepository = PostRepository();
 
-  PostCubitCubit() : super(PostCubitInitial());
+  PostCubitCubit() : super(PostCubitInitial()) {
+    fetchPosts();
+  }
 
   void fetchPosts() async {
     try {
       List<PostModel> posts = await postRepository.fetchPosts();
+
       emit(PostLoadedState(posts));
     } catch (e) {
       emit(PostErrorState(e.toString()));
