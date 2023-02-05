@@ -1,21 +1,9 @@
+import 'package:api_handling/data/models/post_model.dart';
 import 'package:api_handling/data/repositories/post_repository.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    PostRepository postRepository = PostRepository();
-    postRepository.fetchPosts();
-  }
 
   @override
   Widget build(BuildContext context) {
