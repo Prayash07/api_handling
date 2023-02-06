@@ -1,9 +1,11 @@
 import 'package:api_handling/logic/cubit/post_cubit_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+  final ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +25,28 @@ class HomeScreen extends StatelessWidget {
             }
 
             if (state is PostLoadedState) {
-              return ListView.builder(itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    state.posts[index].title.toString(),
-                  ),
-                );
-              });
+              return NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  if (notification.metrics.pixels >
+                          (notification.metrics.maxScrollExtent / 2) &&
+                      controller.position.userScrollDirection ==
+                          ScrollDirection.reverse) {
+                    print("Load more -------------------");
+                  }
+                  return false;
+                },
+                child: ListView.builder(
+                  controller: controller,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                        state.posts[index].title.toString(),
+                      ),
+                    );
+                  },
+                  itemCount: state.posts.length,
+                ),
+              );
             }
 
             return const Text("error has occured");
